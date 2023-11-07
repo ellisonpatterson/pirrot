@@ -50,7 +50,7 @@ class SystemResourceService
         $this->diskAvailable = intval(disk_free_space('/'));
         $this->diskUsed = $this->diskTotal - $this->diskAvailable;
 
-        return $this->diskUsed;
+        return round(($this->diskUsed / $this->diskTotal) * 100);
     }
 
     public function getUptime(): string
