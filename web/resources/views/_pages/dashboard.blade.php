@@ -182,17 +182,20 @@
             $("#s_mapview").attr('href', 'http://www.openstreetmap.org/?mlat=' + result.gps_lat + '&mlon=' + result.gps_lng + '&zoom=12');
         }
 
-        window.setInterval(function () {
-                fetch('/dashboard/stats')
-                    .then(response => response.json())
-                    .then(result => {
-                        renderStats(result);
-                        //console.log(result);
-                    })
-                    .catch(error => {
-                        console.log('No data returned from the stats endpoint.');
-                    })
-            },
-            5000);
+        function fetchStats() {
+            return fetch('/dashboard/stats')
+                .then(response => response.json())
+                .then(result => {
+                    renderStats(result);
+                    //console.log(result);
+                })
+                .catch(error => {
+                    console.log('No data returned from the stats endpoint.');
+                });
+        }
+
+        fetchStats();
+
+        window.setInterval(() => fetchStats(), 5000);
     </script>
 @endsection
