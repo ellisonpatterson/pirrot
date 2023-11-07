@@ -46,12 +46,11 @@ class SystemResourceService
 
     public function getDiskUsage(): int
     {
-        $data = shell_exec("df -l | grep '/dev/root' | awk '{print $1,$2,$3,$4,$5}'");
-        $parts = explode(' ', $data);
-        $this->diskUsed = trim($parts[2]);
-        $this->diskTotal = trim($parts[1]);
-        $this->diskAvailable = $this->diskTotal - $this->diskUsed;
-        return rtrim(trim($parts[4]), "%");
+        $this->diskTotal = intval(disk_total_space('/'));
+        $this->diskAvailable = intval(disk_free_space('/'));
+        $this->diskUsed = $this->diskTotal - $this->diskAvailable;
+
+        return $this->diskUsed;
     }
 
     public function getUptime(): string
